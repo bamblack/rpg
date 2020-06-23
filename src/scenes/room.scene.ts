@@ -39,8 +39,8 @@ export class RoomScene extends Phaser.Scene {
     }
 
     public preload(): void {
-        this.load.image('tiles', '/assets/img/tilesheets/dungeon-1.png');
-        this.load.spritesheet('player', '/assets/img/spritesheets/rogue.png', { frameWidth: 30, frameHeight: 30 });
+        this.load.image('tiles', 'assets/img/tilesheets/dungeon-1.png');
+        this.load.spritesheet('player', 'assets/img/spritesheets/rogue.png', { frameWidth: 30, frameHeight: 30 });
 
         this.scale.on('resize', (gameSize: { gameWidth: number, gameHeight: number }) => {
             const currentX = this.groundLayer?.x ?? 0;
