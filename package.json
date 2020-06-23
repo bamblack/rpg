@@ -5,7 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "build": "webpack",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "publish": "git subtree push --prefix dist origin gh-pages"
   },
   "author": "Ben Black",
   "license": "MIT",
