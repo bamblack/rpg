@@ -1,4 +1,4 @@
-import { Room, IRoomCoordinates, RoomConnection, oppositeRoomConnection } from './Room';
+import { Room, IRoomCoordinates, Direction, oppositeDirection, RoomType } from './Room';
 
 export class Dungeon {
     // 10x10 array of Rooms
@@ -34,31 +34,31 @@ export class Dungeon {
     // Private Methods //
     /////////////////////
     /**
-     * Recursively create a path of rooms. forceRoomConnections should only be used on the initial call of this (for spawnRoom)
+     * Recursively create a path of rooms. forceDirections should only be used on the initial call of this (for spawnRoom)
      */
     private generateConnectedRooms(sourceRoom: Room, forceRoomConnections?: number): void {
-        const roomMap: { [key in RoomConnection]: IRoomCoordinates } = {
-            [RoomConnection.LEFT]: { x: sourceRoom.roomCoordinates.x - 1, y: sourceRoom.roomCoordinates.y },
-            [RoomConnection.RIGHT]: { x: sourceRoom.roomCoordinates.x + 1, y: sourceRoom.roomCoordinates.y },
-            [RoomConnection.ABOVE]: { x: sourceRoom.roomCoordinates.x, y: sourceRoom.roomCoordinates.y - 1 },
-            [RoomConnection.BELOW]: { x: sourceRoom.roomCoordinates.x, y: sourceRoom.roomCoordinates.y + 1 }
+        const roomMap: { [key in Direction]: IRoomCoordinates } = {
+            [Direction.Left]: { x: sourceRoom.roomCoordinates.x - 1, y: sourceRoom.roomCoordinates.y },
+            [Direction.Right]: { x: sourceRoom.roomCoordinates.x + 1, y: sourceRoom.roomCoordinates.y },
+            [Direction.Above]: { x: sourceRoom.roomCoordinates.x, y: sourceRoom.roomCoordinates.y - 1 },
+            [Direction.Below]: { x: sourceRoom.roomCoordinates.x, y: sourceRoom.roomCoordinates.y + 1 }
         };
 
-        const possibleConnections: RoomConnection[] = [];
-        if (roomMap[RoomConnection.LEFT].x >= 0 && this.rooms[roomMap[RoomConnection.LEFT].y][roomMap[RoomConnection.LEFT].x] === null) {
-            possibleConnections.push(RoomConnection.LEFT);
+        const possibleConnections: Direction[] = [];
+        if (roomMap[Direction.Left].x >= 0 && this.rooms[roomMap[Direction.Left].y][roomMap[Direction.Left].x] === null) {
+            possibleConnections.push(Direction.Left);
         }
 
-        if (roomMap[RoomConnection.RIGHT].x <= 9 && this.rooms[roomMap[RoomConnection.RIGHT].y][roomMap[RoomConnection.RIGHT].x] === null) {
-            possibleConnections.push(RoomConnection.RIGHT);
+        if (roomMap[Direction.Right].x <= 9 && this.rooms[roomMap[Direction.Right].y][roomMap[Direction.Right].x] === null) {
+            possibleConnections.push(Direction.Right);
         }
 
-        if (roomMap[RoomConnection.ABOVE].y >= 0 && this.rooms[roomMap[RoomConnection.ABOVE].y][roomMap[RoomConnection.ABOVE].x] === null) {
-            possibleConnections.push(RoomConnection.ABOVE);
+        if (roomMap[Direction.Above].y >= 0 && this.rooms[roomMap[Direction.Above].y][roomMap[Direction.Above].x] === null) {
+            possibleConnections.push(Direction.Above);
         }
 
-        if (roomMap[RoomConnection.BELOW].y <= 9 && this.rooms[roomMap[RoomConnection.BELOW].y][roomMap[RoomConnection.BELOW].x] === null) {
-            possibleConnections.push(RoomConnection.BELOW);
+        if (roomMap[Direction.Below].y <= 9 && this.rooms[roomMap[Direction.Below].y][roomMap[Direction.Below].x] === null) {
+            possibleConnections.push(Direction.Below);
         }
 
         const connectedRoomsToGenerate = Math.max(forceRoomConnections || 0, Math.floor(Math.random() * (possibleConnections.length + 1)));
@@ -73,9 +73,13 @@ export class Dungeon {
             const directionToUse = possibleConnections.splice(Math.floor(Math.random() * possibleConnections.length), 1)[0];
             const newRoomCoordinates = roomMap[directionToUse];
             const newRoom = new Room(newRoomCoordinates);
+
+            const roomType = Math.floor(Math.random() * Object.keys(RoomType).filter(x => !parseInt(x)).length) as RoomType;
+            newRoom.roomType = roomType;
+
             newRooms.push(newRoom);
             sourceRoom.connectedRooms[directionToUse] = newRoom; // let the source room know it has a connection to the new room in this direction
-            newRoom.connectedRooms[oppositeRoomConnection[directionToUse]] = sourceRoom; // let the new room know it has a connection to the source room in the opposite direction
+            newRoom.connectedRooms[oppositeDirection[directionToUse]] = sourceRoom; // let the new room know it has a connection to the source room in the opposite direction
 
             this.rooms[newRoom.roomCoordinates.y][newRoom.roomCoordinates.x] = newRoom; // register the new room in the room map
         }

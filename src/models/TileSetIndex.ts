@@ -1,5 +1,7 @@
 export enum Dungeon1TileSetIndex {
+    HoleTopLeftCorner = 0,
     BottomNormalWall = 1,
+    HoleTopRightCorner = 2,
     TopLeftCorner = 3,
     TopRightCorner = 4,
     NormalFloor = 6,
@@ -13,6 +15,7 @@ export enum Dungeon1TileSetIndex {
     EmptyVase2 = 14,
     EmptyVase3 = 15,
     RightNormalWall = 19,
+    Empty = 20,
     LeftNormalWall = 21,
     BottomLeftCorner = 22,
     BottomRightCorner = 23,
@@ -23,7 +26,9 @@ export enum Dungeon1TileSetIndex {
     TexturedFloor11 = 29,
     TexturedFloor12 = 30,
     TexturedFloor13 = 31,
+    HoleBottomLeftCorner = 38,
     TopNormalWall = 39,
+    HoleBottomRightCorner = 40,
     TexturedFloor14 = 44,
     TexturedFloor15 = 45,
     TexturedFloor16 = 46,
@@ -49,20 +54,34 @@ export enum Dungeon1TileSetIndex {
     BottomTexturedWall1 = 78,
     BottomTexturedWall2 = 79,
     BottomTexturedWall3 = 80,
+    DividerEndLeft = 82,
+    DividerHorizontal = 83,
+    DividerHorizontalTextured = 84,
+    DividerEndRight = 85,
+    DividerEndTop = 86,
     TexturedFloor28 = 87,
     TexturedFloor29 = 88,
     LeftTexturedWall2 = 95,
     RightTexturedWall2 = 96,
     TopGateCap = 99,
+    DividerTopLeftCorner = 101,
+    DividerTopRightCorner = 102,
+    DividerVerticalTextured = 105,
     TexturedFloor30 = 107,
     TexturedFloor31 = 108,
     LeftTexturedWall3 = 114,
     RightTexturedWall3 = 115,
     TopGate = 118,
+    DividerBottomLeftCorner = 120,
+    DividerBottomRightCorner = 121,
+    DividerVertical = 124,
     BottomGate = 139,
+    DividerEndBottom = 143,
     TopGateLocked = 157,
     BottomGateCap = 158,
     BottomGateLocked = 177,
+    PillarTop = 186,
+    PillarBottom = 205,
     RightGate = 209,
     RightGateCap = 210,
     RightGateLocked = 213,
@@ -70,3 +89,22 @@ export enum Dungeon1TileSetIndex {
     LeftGate = 229,
     LeftGateLocked = 233
 };
+
+export const Dungeon1TileSetIndexWallWeights: { [key: string]: { index: number | number[], weight: number }[] } = {
+    TopWall: [
+        { index: Dungeon1TileSetIndex.TopNormalWall, weight: 4 },
+        { index: [Dungeon1TileSetIndex.TopTexturedWall1, Dungeon1TileSetIndex.TopTexturedWall2, Dungeon1TileSetIndex.TopTexturedWall3], weight: 1 }
+    ],
+    RightWall: [
+        { index: Dungeon1TileSetIndex.RightNormalWall, weight: 4 },
+        { index: [Dungeon1TileSetIndex.RightTexturedWall1, Dungeon1TileSetIndex.RightTexturedWall2, Dungeon1TileSetIndex.RightTexturedWall3], weight: 1 }
+    ],
+    BottomWall: [
+        { index: Dungeon1TileSetIndex.BottomNormalWall, weight: 4 },
+        { index: [Dungeon1TileSetIndex.BottomTexturedWall1, Dungeon1TileSetIndex.BottomTexturedWall2, Dungeon1TileSetIndex.BottomTexturedWall3], weight: 1 }
+    ],
+    LeftWall: [
+        { index: Dungeon1TileSetIndex.LeftNormalWall, weight: 4 },
+        { index: [Dungeon1TileSetIndex.LeftTexturedWall1, Dungeon1TileSetIndex.LeftTexturedWall2, Dungeon1TileSetIndex.LeftTexturedWall3], weight: 1 }
+    ]
+}
